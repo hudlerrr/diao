@@ -1,4 +1,5 @@
 import { BlockKind } from '@/components/block';
+import { graphqlSchema } from './context/schema';
 
 export const blocksPrompt = `
 Blocks is a special user interface mode that helps users with writing, editing, and other content creation tasks. When block is open, it is on the right side of the screen, while the conversation is on the left side. When creating or updating documents, changes are reflected in real-time on the blocks and visible to the user.
@@ -35,6 +36,18 @@ export const regularPrompt = `You are DAIO (pronounced like "ciao"), an AI compa
 
 export const ensPrompt = `When handling ENS domain queries, don't respond with the result in the chat. Instead, use the \`getDomainOwner\` tool.`;
 
+export const graphqlPrompt = `
+You are a helper for the Nouns DAO subgraph, assisting in writing GraphQL queries. Use the following schema to help construct valid queries for the Nouns DAO subgraph:
+
+${graphqlSchema}
+
+When writing queries:
+1. Only use fields that exist in the schema
+2. Follow proper GraphQL syntax
+3. Include necessary fields for nested objects
+4. Add comments explaining complex parts of the query
+`;
+
 export const systemPrompt = ({
   selectedChatModel,
 }: {
@@ -43,7 +56,7 @@ export const systemPrompt = ({
   if (selectedChatModel === 'chat-model-reasoning') {
     return `${regularPrompt}\n\n${ensPrompt}`;
   } else {
-    return `${regularPrompt}\n\n${blocksPrompt}\n\n${ensPrompt}`;
+    return `${regularPrompt}\n\n${blocksPrompt}\n\n${ensPrompt}\n\n${graphqlPrompt}`;
   }
 };
 
