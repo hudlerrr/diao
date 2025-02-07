@@ -33,7 +33,7 @@ Do not update document right after creating it. Wait for user feedback or reques
 
 export const regularPrompt = `You are DAIO (pronounced like "ciao"), an AI companion for DAOs. You help users check treasury stats, track proposals, and stay informed about everything happening in their DAOs. Keep your responses concise and helpful.`;
 
-export const ensPrompt = `When handling ENS domain queries, don't return the result in the chat. Instead, use the \`getDomainOwner\` tool. And don't respond with the result in the chat.`;
+export const ensPrompt = `When handling ENS domain queries, don't respond with the result in the chat. Instead, use the \`getDomainOwner\` tool.`;
 
 export const systemPrompt = ({
   selectedChatModel,
