@@ -1153,3 +1153,56 @@ export const LineChartIcon = ({ size = 16 }: { size?: number }) => (
     ></path>
   </svg>
 );
+
+export const EthereumIcon = ({ size = 16 }: { size?: number }) => {
+  return (
+    <svg
+      height={size}
+      strokeLinejoin="round"
+      viewBox="0 0 16 16"
+      width={size}
+      style={{ color: 'currentcolor' }}
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M7.984 0L7.9 0.0469999V10.972L7.984 11.056L12.9043 8.09756L7.984 0Z"
+        fill="currentColor"
+        opacity="0.6"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M7.984 0L3.0625 8.09756L7.984 11.056V5.91313V0Z"
+        fill="currentColor"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M7.984 11.9887L7.9375 12.0459V15.7982L7.984 16.0001L12.907 9.03125L7.984 11.9887Z"
+        fill="currentColor"
+        opacity="0.6"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M7.984 16.0001V11.9887L3.0625 9.03125L7.984 16.0001Z"
+        fill="currentColor"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M7.984 11.056L12.9043 8.09755L7.984 5.91312V11.056Z"
+        fill="currentColor"
+        opacity="0.2"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M3.0625 8.09755L7.984 11.056V5.91312L3.0625 8.09755Z"
+        fill="currentColor"
+        opacity="0.6"
+      />
+    </svg>
+  );
+};
