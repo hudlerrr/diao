@@ -25,6 +25,7 @@ import { createDocument } from '@/lib/ai/tools/create-document';
 import { updateDocument } from '@/lib/ai/tools/update-document';
 import { requestSuggestions } from '@/lib/ai/tools/request-suggestions';
 import { getWeather } from '@/lib/ai/tools/get-weather';
+import { getDomainOwner } from '@/lib/ai/tools/ens';
 
 export const maxDuration = 60;
 
@@ -74,6 +75,7 @@ export async function POST(request: Request) {
                 'createDocument',
                 'updateDocument',
                 'requestSuggestions',
+                'getDomainOwner',
               ],
         experimental_transform: smoothStream({ chunking: 'word' }),
         experimental_generateMessageId: generateUUID,
@@ -85,6 +87,7 @@ export async function POST(request: Request) {
             session,
             dataStream,
           }),
+          getDomainOwner,
         },
         onFinish: async ({ response, reasoning }) => {
           if (session.user?.id) {

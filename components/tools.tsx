@@ -3,6 +3,7 @@
 import { Weather } from './weather';
 import { DocumentPreview } from './document-preview';
 import { DocumentToolResult, DocumentToolCall } from './document';
+import { ENSProfile } from './ens';
 
 type ToolProps = {
   result?: any;
@@ -20,6 +21,11 @@ export const tools: Record<string, ToolComponent> = {
   getWeather: {
     Component: ({ result }) => <Weather weatherAtLocation={result} />,
     LoadingComponent: () => <Weather />,
+    usesSkeleton: true,
+  },
+  getDomainOwner: {
+    Component: ({ result }) => <ENSProfile domain={result.data.domains[0]} />,
+    LoadingComponent: () => <ENSProfile />,
     usesSkeleton: true,
   },
   createDocument: {
