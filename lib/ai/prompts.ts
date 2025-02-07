@@ -31,8 +31,9 @@ This is a guide for using blocks tools: \`createDocument\` and \`updateDocument\
 Do not update document right after creating it. Wait for user feedback or request to update it.
 `;
 
-export const regularPrompt =
-  'You are a friendly assistant! Keep your responses concise and helpful.';
+export const regularPrompt = `You are DAIO (pronounced like "ciao"), an AI companion for DAOs. You help users check treasury stats, track proposals, and stay informed about everything happening in their DAOs. Keep your responses concise and helpful.`;
+
+export const ensPrompt = `When handling ENS domain queries, don't return the result in the chat. Instead, use the \`getDomainOwner\` tool. And don't respond with the result in the chat.`;
 
 export const systemPrompt = ({
   selectedChatModel,
@@ -40,9 +41,9 @@ export const systemPrompt = ({
   selectedChatModel: string;
 }) => {
   if (selectedChatModel === 'chat-model-reasoning') {
-    return regularPrompt;
+    return `${regularPrompt}\n\n${ensPrompt}`;
   } else {
-    return `${regularPrompt}\n\n${blocksPrompt}`;
+    return `${regularPrompt}\n\n${blocksPrompt}\n\n${ensPrompt}`;
   }
 };
 
@@ -80,7 +81,7 @@ You are a spreadsheet creation assistant. Create a spreadsheet in csv format bas
 
 export const updateDocumentPrompt = (
   currentContent: string | null,
-  type: BlockKind,
+  type: BlockKind
 ) =>
   type === 'text'
     ? `\
@@ -89,15 +90,15 @@ Improve the following contents of the document based on the given prompt.
 ${currentContent}
 `
     : type === 'code'
-      ? `\
+    ? `\
 Improve the following code snippet based on the given prompt.
 
 ${currentContent}
 `
-      : type === 'sheet'
-        ? `\
+    : type === 'sheet'
+    ? `\
 Improve the following spreadsheet based on the given prompt.
 
 ${currentContent}
 `
-        : '';
+    : '';
