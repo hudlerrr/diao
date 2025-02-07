@@ -25,6 +25,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { MessageEditor } from './message-editor';
 import { DocumentPreview } from './document-preview';
 import { MessageReasoning } from './message-reasoning';
+import { getToolComponent, tools } from './tools';
 
 const PurePreviewMessage = ({
   chatId,
@@ -40,10 +41,10 @@ const PurePreviewMessage = ({
   vote: Vote | undefined;
   isLoading: boolean;
   setMessages: (
-    messages: Message[] | ((messages: Message[]) => Message[]),
+    messages: Message[] | ((messages: Message[]) => Message[])
   ) => void;
   reload: (
-    chatRequestOptions?: ChatRequestOptions,
+    chatRequestOptions?: ChatRequestOptions
   ) => Promise<string | null | undefined>;
   isReadonly: boolean;
 }) => {
@@ -63,7 +64,7 @@ const PurePreviewMessage = ({
             {
               'w-full': mode === 'edit',
               'group-data-[role=user]/message:w-fit': mode !== 'edit',
-            },
+            }
           )}
         >
           {message.role === 'assistant' && (
@@ -138,68 +139,10 @@ const PurePreviewMessage = ({
             )}
 
             {message.toolInvocations && message.toolInvocations.length > 0 && (
-              <div className="flex flex-col gap-4">
-                {message.toolInvocations.map((toolInvocation) => {
-                  const { toolName, toolCallId, state, args } = toolInvocation;
-
-                  if (state === 'result') {
-                    const { result } = toolInvocation;
-
-                    return (
-                      <div key={toolCallId}>
-                        {toolName === 'getWeather' ? (
-                          <Weather weatherAtLocation={result} />
-                        ) : toolName === 'createDocument' ? (
-                          <DocumentPreview
-                            isReadonly={isReadonly}
-                            result={result}
-                          />
-                        ) : toolName === 'updateDocument' ? (
-                          <DocumentToolResult
-                            type="update"
-                            result={result}
-                            isReadonly={isReadonly}
-                          />
-                        ) : toolName === 'requestSuggestions' ? (
-                          <DocumentToolResult
-                            type="request-suggestions"
-                            result={result}
-                            isReadonly={isReadonly}
-                          />
-                        ) : (
-                          <pre>{JSON.stringify(result, null, 2)}</pre>
-                        )}
-                      </div>
-                    );
-                  }
-                  return (
-                    <div
-                      key={toolCallId}
-                      className={cx({
-                        skeleton: ['getWeather'].includes(toolName),
-                      })}
-                    >
-                      {toolName === 'getWeather' ? (
-                        <Weather />
-                      ) : toolName === 'createDocument' ? (
-                        <DocumentPreview isReadonly={isReadonly} args={args} />
-                      ) : toolName === 'updateDocument' ? (
-                        <DocumentToolCall
-                          type="update"
-                          args={args}
-                          isReadonly={isReadonly}
-                        />
-                      ) : toolName === 'requestSuggestions' ? (
-                        <DocumentToolCall
-                          type="request-suggestions"
-                          args={args}
-                          isReadonly={isReadonly}
-                        />
-                      ) : null}
-                    </div>
-                  );
-                })}
-              </div>
+              <ToolInvocations
+                toolInvocations={message.toolInvocations}
+                isReadonly={isReadonly}
+              />
             )}
 
             {!isReadonly && (
@@ -228,14 +171,14 @@ export const PreviewMessage = memo(
     if (
       !equal(
         prevProps.message.toolInvocations,
-        nextProps.message.toolInvocations,
+        nextProps.message.toolInvocations
       )
     )
       return false;
     if (!equal(prevProps.vote, nextProps.vote)) return false;
 
     return true;
-  },
+  }
 );
 
 export const ThinkingMessage = () => {
@@ -253,7 +196,7 @@ export const ThinkingMessage = () => {
           'flex gap-4 group-data-[role=user]/message:px-3 w-full group-data-[role=user]/message:w-fit group-data-[role=user]/message:ml-auto group-data-[role=user]/message:max-w-2xl group-data-[role=user]/message:py-2 rounded-xl',
           {
             'group-data-[role=user]/message:bg-muted': true,
-          },
+          }
         )}
       >
         <div className="size-8 flex items-center rounded-full justify-center ring-1 shrink-0 ring-border">
@@ -269,3 +212,43 @@ export const ThinkingMessage = () => {
     </motion.div>
   );
 };
+
+function ToolInvocations({
+  toolInvocations,
+  isReadonly,
+}: {
+  toolInvocations: Message['toolInvocations'];
+  isReadonly: boolean;
+}) {
+  return (
+    <div className="flex flex-col gap-4">
+      {toolInvocations?.map((toolInvocation) => {
+        const { toolName, toolCallId, state, args } = toolInvocation;
+        const isResult = state === 'result';
+        const Tool = getToolComponent(toolName, !isResult);
+
+        if (!Tool) {
+          return isResult ? (
+            <pre key={toolCallId}>
+              {JSON.stringify(toolInvocation.result, null, 2)}
+            </pre>
+          ) : null;
+        }
+
+        return (
+          <div
+            key={toolCallId}
+            className={cx({
+              skeleton: !isResult && tools[toolName]?.usesSkeleton,
+            })}
+          >
+            <Tool
+              isReadonly={isReadonly}
+              {...(isResult ? { result: toolInvocation.result } : { args })}
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
+}
