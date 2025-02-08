@@ -26,7 +26,8 @@ import { updateDocument } from '@/lib/ai/tools/update-document';
 import { requestSuggestions } from '@/lib/ai/tools/request-suggestions';
 import { getWeather } from '@/lib/ai/tools/get-weather';
 import { getDomainOwner } from '@/lib/ai/tools/ens';
-import { getNounsProposals } from '@/lib/ai/tools/nouns';
+import { getNounsProposals } from '@/lib/ai/tools/proposals/list';
+import { getNounsProposalById } from '@/lib/ai/tools/proposals/get-by-id';
 
 export const maxDuration = 60;
 
@@ -78,6 +79,7 @@ export async function POST(request: Request) {
                 'requestSuggestions',
                 'getDomainOwner',
                 'getNounsProposals',
+                'getNounsProposalById',
               ],
         experimental_transform: smoothStream({ chunking: 'word' }),
         experimental_generateMessageId: generateUUID,
@@ -91,6 +93,7 @@ export async function POST(request: Request) {
           }),
           getDomainOwner,
           getNounsProposals,
+          getNounsProposalById,
         },
         onFinish: async ({ response, reasoning }) => {
           if (session.user?.id) {
