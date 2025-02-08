@@ -43,7 +43,15 @@ export function NounsProposals({
   proposals = SAMPLE_PROPOSALS,
 }: NounsProposalsProps) {
   const handleProposalClick = (proposalId: string) => {
-    console.log(`Get details for proposal ${proposalId}`);
+    const textarea = document.querySelector(
+      'textarea[placeholder="Send a message..."]'
+    ) as HTMLTextAreaElement;
+    if (textarea) {
+      textarea.value = `Tell me more about Nouns proposal #${proposalId}`;
+      const event = new Event('input', { bubbles: true });
+      textarea.dispatchEvent(event);
+      textarea.focus();
+    }
   };
 
   return (
