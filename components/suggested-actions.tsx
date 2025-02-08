@@ -21,18 +21,18 @@ function PureSuggestedActions({ chatId, append }: SuggestedActionsProps) {
       action: 'Get me information about the ENS domain wais.eth',
     },
     {
-      title: 'Write code to',
-      label: `demonstrate djikstra's algorithm`,
-      action: `Write code to demonstrate djikstra's algorithm`,
+      title: 'Get latest proposals',
+      label: 'from Nouns DAO',
+      action: 'Get the latest active Nouns DAO governance proposals',
     },
     {
-      title: 'Help me write an essay',
-      label: `about silicon valley`,
-      action: `Help me write an essay about silicon valley`,
+      title: 'Get proposal details',
+      label: 'for Nouns DAO proposal #156',
+      action: 'Get me information about Nouns DAO proposal with ID 156',
     },
     {
-      title: 'Write GraphQL query',
-      label: 'for Nouns DAO proposals and votes',
+      title: 'Write query for Nouns subgraph',
+      label: 'to get a list of proposals and votes',
       action:
         'Write me a GraphQL query for Nouns DAO to get list of proposals and votes',
     },
