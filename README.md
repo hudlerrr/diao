@@ -1,45 +1,46 @@
-# Next.js AI Chatbot
+# DIAO
 
 ## Overview
 
-This project is an open-source AI chatbot template built with Next.js and the AI SDK by Vercel. It is designed to be a starting point for building AI-powered applications, offering a customizable and extendable framework. The chatbot leverages advanced AI models to provide intelligent responses and can be deployed easily on Vercel.
+DIAO (pronounced like “ciao”) is an AI-powered DAO assistant that enables intuitive interaction with your DAO while displaying data visually instead of just text.
 
 ## Features
 
-- **Next.js App Router**: Advanced routing for seamless navigation and performance, including React Server Components (RSCs) and Server Actions for server-side rendering.
-- **AI SDK Integration**: Unified API for generating text, structured objects, and tool calls with LLMs. Supports multiple model providers like OpenAI, Anthropic, and Cohere.
-- **UI Components**: Styled with Tailwind CSS and component primitives from Radix UI for accessibility and flexibility.
-- **Data Persistence**: Utilizes Vercel Postgres for saving chat history and user data, and Vercel Blob for efficient file storage.
-- **Authentication**: Simple and secure authentication using NextAuth.js.
-- **Customizable Blocks**: Includes text, code, image, and sheet blocks for diverse content interaction.
-- **Weather and File Upload Tools**: Integrated tools for fetching weather data and uploading files.
+1. ENS Domain Integration
+- Lookup ENS domains and render them as visually appealing profile cards.
+
+2. Subgraph Query Generation
+- Automatically generate queries based on the subgraph schema (currently supports only Nouns DAO).
+
+3. Proposal Listing
+- Fetch and display a clickable list of DAO proposals for easy exploration.
+
+4. Detailed Proposal View
+- Retrieve a specific proposal by ID, displaying it as:
+  - A card-style summary UI.
+  - A full document-style detailed view.
+
+Additionally, DIAO integrates general LLM capabilities, enabling conversational interaction and deeper discussions about the displayed DAO data.
 
 ## Installation
 
 To set up the project locally, follow these steps:
-
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/<username>/<repository>
-   cd <repository>
-   ```
-
-2. **Install Dependencies**:
+1. **Install Dependencies**:
    ```bash
    pnpm install
    ```
 
-3. **Set Up Environment Variables**:
+2. **Set Up Environment Variables**:
    - Copy the `.env.example` file to `.env` and fill in the necessary environment variables.
    - Alternatively, use Vercel Environment Variables for better security.
 
-4. **Link with Vercel**:
+3. **Link with Vercel**:
    ```bash
    vercel link
    vercel env pull
    ```
 
-5. **Run the Development Server**:
+4. **Run the Development Server**:
    ```bash
    pnpm dev
    ```
