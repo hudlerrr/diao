@@ -5,6 +5,8 @@ import { DocumentPreview } from './document-preview';
 import { DocumentToolResult, DocumentToolCall } from './document';
 import { ENSProfile } from './ens';
 import { NounsProposals } from './nouns-proposals';
+import { ProposalDetails } from './proposal-details';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
 
 type ToolProps = {
   result?: any;
@@ -75,6 +77,11 @@ export const tools: Record<string, ToolComponent> = {
       />
     ),
   },
+  getNounsProposalById: {
+    Component: GetNounsProposalById,
+    LoadingComponent: GetNounsProposalByIdLoading,
+    usesSkeleton: false,
+  },
 };
 
 export function getToolComponent(
@@ -85,4 +92,34 @@ export function getToolComponent(
   if (!tool) return null;
 
   return isLoading ? tool.LoadingComponent : tool.Component;
+}
+
+export function GetNounsProposalById({ result, isReadonly }: ToolProps) {
+  if (!result?.data?.proposal) {
+    return <div>No proposal found</div>;
+  }
+
+  return <ProposalDetails proposal={result.data.proposal} />;
+}
+
+export function GetNounsProposalByIdLoading() {
+  return (
+    <Card className="w-full max-w-4xl mx-auto animate-pulse">
+      <CardHeader className="space-y-2">
+        <div className="h-4 w-24 bg-muted rounded" />
+        <div className="h-8 w-3/4 bg-muted rounded" />
+        <div className="h-4 w-48 bg-muted rounded" />
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <div className="space-y-4">
+          <div className="h-2 bg-muted rounded-full" />
+          <div className="grid grid-cols-3 gap-4">
+            <div className="h-12 bg-muted rounded" />
+            <div className="h-12 bg-muted rounded" />
+            <div className="h-12 bg-muted rounded" />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
 }
