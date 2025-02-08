@@ -1,10 +1,17 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import { CodeIcon, LoaderIcon, PlayIcon, PythonIcon } from './icons';
+import { CodeIcon, CopyIcon, LoaderIcon, PlayIcon, PythonIcon } from './icons';
 import { Button } from './ui/button';
-import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+  TooltipProvider,
+} from './ui/tooltip';
 import { cn } from '@/lib/utils';
+import { useCopyToClipboard } from 'usehooks-ts';
+import { toast } from 'sonner';
 
 interface CodeBlockProps {
   node: any;
@@ -26,17 +33,40 @@ export function CodeBlock({
   const isPython = match && match[1] === 'python';
   const codeContent = String(children).replace(/\n$/, '');
   const [tab, setTab] = useState<'code' | 'run'>('code');
+  const [_, copyToClipboard] = useCopyToClipboard();
 
   if (!inline) {
     return (
       <div className="not-prose flex flex-col">
         {tab === 'code' && (
-          <pre
-            {...props}
-            className={`text-sm w-full overflow-x-auto dark:bg-zinc-900 p-4 border border-zinc-200 dark:border-zinc-700 rounded-xl dark:text-zinc-50 text-zinc-900`}
-          >
-            <code className="whitespace-pre-wrap break-words">{children}</code>
-          </pre>
+          <div className="relative">
+            <TooltipProvider delayDuration={0}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="absolute right-2 top-2"
+                    onClick={async () => {
+                      await copyToClipboard(codeContent);
+                      toast.success('Copied to clipboard!');
+                    }}
+                  >
+                    <CopyIcon size={16} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Copy code</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <pre
+              {...props}
+              className={`text-sm w-full overflow-x-auto dark:bg-zinc-900 p-4 border border-zinc-200 dark:border-zinc-700 rounded-xl dark:text-zinc-50 text-zinc-900`}
+            >
+              <code className="whitespace-pre-wrap break-words">
+                {children}
+              </code>
+            </pre>
+          </div>
         )}
 
         {tab === 'run' && output && (
