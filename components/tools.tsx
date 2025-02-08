@@ -4,6 +4,7 @@ import { Weather } from './weather';
 import { DocumentPreview } from './document-preview';
 import { DocumentToolResult, DocumentToolCall } from './document';
 import { ENSProfile } from './ens';
+import { NounsProposals } from './nouns-proposals';
 
 type ToolProps = {
   result?: any;
@@ -26,6 +27,16 @@ export const tools: Record<string, ToolComponent> = {
   getDomainOwner: {
     Component: ({ result }) => <ENSProfile domain={result.data.domains[0]} />,
     LoadingComponent: () => <ENSProfile />,
+    usesSkeleton: true,
+  },
+  getNounsProposals: {
+    Component: ({ result }) => {
+      if (!result || !result.data || !result.data.proposals) {
+        return <NounsProposals />;
+      }
+      return <NounsProposals proposals={result.data.proposals} />;
+    },
+    LoadingComponent: () => <NounsProposals />,
     usesSkeleton: true,
   },
   createDocument: {

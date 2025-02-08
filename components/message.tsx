@@ -229,9 +229,9 @@ function ToolInvocations({
 
         if (!Tool) {
           return isResult ? (
-            <pre key={toolCallId}>
+            <Markdown key={toolCallId}>
               {JSON.stringify(toolInvocation.result, null, 2)}
-            </pre>
+            </Markdown>
           ) : null;
         }
 
