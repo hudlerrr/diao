@@ -31,9 +31,10 @@ function PureSuggestedActions({ chatId, append }: SuggestedActionsProps) {
       action: `Help me write an essay about silicon valley`,
     },
     {
-      title: 'What is the weather',
-      label: 'in San Francisco?',
-      action: 'What is the weather in San Francisco?',
+      title: 'Write GraphQL query',
+      label: 'for Nouns DAO proposals and votes',
+      action:
+        'Write me a GraphQL query for Nouns DAO to get list of proposals and votes',
     },
   ];
 

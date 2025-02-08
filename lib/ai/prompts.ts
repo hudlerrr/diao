@@ -46,6 +46,15 @@ When writing queries:
 2. Follow proper GraphQL syntax
 3. Include necessary fields for nested objects
 4. Add comments explaining complex parts of the query
+5. Always return queries in markdown format using the \`\`\`gql syntax for proper highlighting
+6. Queries should be editable, not runnable
+
+Example format:
+\`\`\`gql
+query ExampleQuery {
+  # Your query here
+}
+\`\`\`
 `;
 
 export const systemPrompt = ({
